@@ -6,21 +6,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
-      - name: Setup .NET
+      - name: Setup.NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
           
-      - name: Get SMAPI DLLs
+      - name: Prepare Game DLLs
         run: |
           wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
-          unzip -q smapi.zip -d temp
+          unzip -q smapi.zip -d temp_smapi
           mkdir -p gamedlls
-          # DLL'leri tek tek bul ve tam isme göre kopyala
-          find temp -name "StardewModdingAPI.dll" -exec cp {} gamedlls/StardewModdingAPI.dll \;
-          find temp -name "StardewValley.dll" -exec cp {} gamedlls/StardewValley.dll \;
+          # SMAPI içindeki referans kütüphaneleri bul ve yerleştir
+          find temp_smapi -name "StardewModdingAPI.dll" -exec cp {} gamedlls/StardewModdingAPI.dll \;
+          find temp_smapi -name "StardewValley.dll" -exec cp {} gamedlls/StardewValley.dll \;
+          # Eğer installer'da game dll yoksa boş bir tane oluşturma (Derleme için API yeterlidir)
+          && touch gamedlls/StardewValley.dll
           
-      - name: Build
+      - name: Build Mod
         run: dotnet build --configuration Release
         
       - name: Pack
@@ -32,5 +34,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: MobileTouchEnhancer-Package
+          name: MobileTouchEnhancer-Final
           path: publish/
