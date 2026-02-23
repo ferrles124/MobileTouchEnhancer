@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>MobileTouchEnhancer</AssemblyName>
+    <RootNamespace>MobileTouchEnhancer</RootNamespace>
+    <Nullable>enable</Nullable>
+    <GameDlls Condition="'$(GameDlls)' == ''">$(MSBuildProjectDirectory)/gamedlls</GameDlls>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="StardewValley"><HintPath>$(GameDlls)/StardewValley.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="StardewModdingAPI"><HintPath>$(GameDlls)/StardewModdingAPI.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="xTile"><HintPath>$(GameDlls)/xTile.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+</Project>
