@@ -12,8 +12,10 @@ jobs:
           dotnet-version: '6.0.x'
           
       - name: Build
-        # IGNORE_MOD_BUILD_PACKAGE_CHECKS=true komutu oyun klasörü eksikliğini görmezden gelmesini sağlar
-        run: dotnet build --configuration Release /p:IgnoreModBuildConfigCheck=true
+        # GamePath parametresini boş bir klasöre yönlendirerek sistemi kandırıyoruz
+        run: |
+          mkdir -p fake_game_folder
+          dotnet build --configuration Release /p:GamePath="${{ github.workspace }}/fake_game_folder" /p:IgnoreModBuildConfigCheck=true
         
       - name: Pack
         run: |
