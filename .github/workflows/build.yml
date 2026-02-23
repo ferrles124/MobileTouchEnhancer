@@ -16,11 +16,11 @@ jobs:
           wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
           unzip -q smapi.zip -d temp_smapi
           mkdir -p gamedlls
-          # SMAPI içindeki referans kütüphaneleri bul ve yerleştir
+          # Sadece API dosyasını installer içinden çekiyoruz
           find temp_smapi -name "StardewModdingAPI.dll" -exec cp {} gamedlls/StardewModdingAPI.dll \;
-          find temp_smapi -name "StardewValley.dll" -exec cp {} gamedlls/StardewValley.dll \;
-          # Eğer installer'da game dll yoksa boş bir tane oluşturma (Derleme için API yeterlidir)
-          && touch gamedlls/StardewValley.dll
+          # Oyunun asıl DLL'i installerda yoktur. Hata vermemesi için boş bir dosya oluşturuyoruz.
+          # NOT: Gerçek derleme için kendi oyunundaki Stardew Valley.dll dosyasını gamedlls içine yüklemelisin.
+          touch gamedlls/StardewValley.dll
           
       - name: Build Mod
         run: dotnet build --configuration Release
@@ -34,5 +34,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: MobileTouchEnhancer-Final
+          name: MobileTouchEnhancer-Result
           path: publish/
