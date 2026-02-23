@@ -5,25 +5,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '6.0.x'
+
       - name: Get SMAPI DLLs
         run: |
           wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
-          unzip -q smapi.zip -d temp
+          unzip -q smapi.zip -d temp_smapi
           mkdir -p gamedlls
-          find temp -name "StardewModdingAPI.dll" -exec cp {} gamedlls/ \;
-          find temp -name "StardewValley.dll" -exec cp {} gamedlls/ \;
-          find temp -name "xTile.dll" -exec cp {} gamedlls/ \;
+          
+          # DLL'leri tüm alt klasörlerde tarayıp gamedlls içine kopyalar
+          find temp_smapi -name "StardewModdingAPI.dll" -exec cp {} gamedlls/ \;
+          find temp_smapi -name "StardewValley.dll" -exec cp {} gamedlls/ \;
+          find temp_smapi -name "xTile.dll" -exec cp {} gamedlls/ \;
+          
+          # Klasörün dolu olduğunu doğrula (Hata ayıklama için)
+          echo "Kopyalanan dosyalar:"
+          ls gamedlls/
+
       - name: Build
+        # Restore ve Build işlemlerini birleştirerek referans yolunu garantiye alıyoruz
         run: dotnet build --configuration Release -p:GameDlls="${{ github.workspace }}/gamedlls"
+
       - name: Pack
         run: |
           mkdir -p publish
+          # Build başarılıysa DLL'i publish klasörüne al
           cp bin/Release/net6.0/MobileTouchEnhancer.dll publish/
           cp manifest.json publish/
+
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
