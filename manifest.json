@@ -1,0 +1,9 @@
+{
+  "Name": "Mobile Touch Enhancer",
+  "Author": "MeD",
+  "Version": "1.0.0",
+  "Description": "Mobil oyuncular için tıklama yardımcısı.",
+  "UniqueID": "MeD.MobileTouchEnhancer",
+  "EntryDll": "MobileTouchEnhancer.dll",
+  "MinimumApiVersion": "4.0.0"
+}
