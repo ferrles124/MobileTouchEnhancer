@@ -11,11 +11,17 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           
-      - name: Build
-        # GamePath parametresini boş bir klasöre yönlendirerek sistemi kandırıyoruz
+      - name: Get SMAPI DLLs
         run: |
-          mkdir -p fake_game_folder
-          dotnet build --configuration Release /p:GamePath="${{ github.workspace }}/fake_game_folder" /p:IgnoreModBuildConfigCheck=true
+          wget -q https://github.com/Pathoschild/SMAPI/releases/download/4.1.10/SMAPI-4.1.10-installer.zip -O smapi.zip
+          unzip -q smapi.zip -d temp
+          mkdir -p gamedlls
+          # DLL'leri tek tek bul ve tam isme göre kopyala
+          find temp -name "StardewModdingAPI.dll" -exec cp {} gamedlls/StardewModdingAPI.dll \;
+          find temp -name "StardewValley.dll" -exec cp {} gamedlls/StardewValley.dll \;
+          
+      - name: Build
+        run: dotnet build --configuration Release
         
       - name: Pack
         run: |
