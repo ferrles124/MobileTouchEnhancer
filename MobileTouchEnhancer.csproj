@@ -4,10 +4,11 @@
     <AssemblyName>MobileTouchEnhancer</AssemblyName>
     <RootNamespace>MobileTouchEnhancer</RootNamespace>
     <Nullable>enable</Nullable>
+    <EnableModDeploy>false</EnableModDeploy>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.10" />
+    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
   </ItemGroup>
 </Project>
